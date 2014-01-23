@@ -4,8 +4,9 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    UI w;
-    w.show();
 
+    Mechanics *mechanics = new Mechanics();
+    UI ui(mechanics);
+    ui.show();
     return a.exec();
 }

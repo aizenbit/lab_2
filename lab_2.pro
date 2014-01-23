@@ -13,6 +13,8 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        ui.cpp
+        ui.cpp \
+    mechanics.cpp
 
-HEADERS  += ui.h
+HEADERS  += ui.h \
+    mechanics.h
