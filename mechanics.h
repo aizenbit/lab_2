@@ -9,7 +9,7 @@ class Mechanics : public QWidget
 
 private:
     virtual void paintEvent(QPaintEvent *);
-    double **array;
+    QList<QPointF> *pointList;
 
 public:
     Mechanics(QWidget *parent = 0);
