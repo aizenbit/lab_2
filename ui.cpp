@@ -1,9 +1,9 @@
 #include "ui.h"
 
-UI::UI(Mechanics *mech, QWidget *parent)
+UI::UI(QWidget *parent)
     : QWidget(parent)
 {
-    mechanics = mech;
+    mechanics = new Mechanics();
 
     //-----------------------Buttons-----------------------
     graphButton = new QPushButton(tr("Graph"));
@@ -17,6 +17,9 @@ UI::UI(Mechanics *mech, QWidget *parent)
     verticalHeaders << "m" << "φ0" << "φ1" ;
     tableWidget->setVerticalHeaderLabels(verticalHeaders);
     tableWidget->setFixedHeight(143); //высоту вывел эмпирически
+    for(int row = 0;row < 3; row++)
+        for(int column = 0; column < 14; column++)
+            tableWidget->setItem(row, column, new QTableWidgetItem("0.0"));
 
     //-----------------------Labels------------------------
     dLabel = new QLabel("d=");
@@ -59,15 +62,38 @@ UI::UI(Mechanics *mech, QWidget *parent)
     mainLayout->addWidget(mechanics);
     mainLayout->addLayout(dataLayout);
     setLayout(mainLayout);
+
+    //---------------------Connections---------------------
+    connect(graphButton, SIGNAL(clicked()), this, SLOT(prepareToGraph()));
+    connect(this,SIGNAL(graph(double**)), mechanics, SLOT(graph(double**)));
 }
+
+//---------------------------------------------------------
 
 UI::~UI()
 {
+    delete mechanics;
     delete graphButton, browseButton;
     delete tableWidget;
     delete nLabel, lLabel, dLabel;
     delete dSpinBox, lSpinBox;
     delete nLineEdit;
     delete dLayout, lLayout, nLayout, dataLayout, mainLayout;
-    delete mechanics;
+}
+
+//---------------------------------------------------------
+
+void UI::prepareToGraph()
+{
+    double **array = new double*[3];
+    for(int i = 0; i < 3; i++)
+        array[i] = new double[14];
+
+    for(int row = 0; row < 3; row++)
+        for(int column = 0; column < 14; column++)
+            if (tableWidget->item(row,column)->text().isEmpty())
+                array[row][column] = 0;
+            else
+                array[row][column] = tableWidget->item(row,column)->text().toDouble();
+    graph(array);
 }

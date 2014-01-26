@@ -9,6 +9,7 @@ class Mechanics : public QWidget
 
 private:
     virtual void paintEvent(QPaintEvent *);
+    double **array;
 
 public:
     Mechanics(QWidget *parent = 0);
@@ -17,6 +18,7 @@ public:
 signals:
 
 public slots:
+    void graph(double **array);
 
 };
 

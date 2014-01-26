@@ -19,8 +19,14 @@ private:
     QLineEdit *nLineEdit;
 
 public:
-    UI(Mechanics *mech, QWidget *parent = 0);
+    UI(QWidget *parent = 0);
     ~UI();
+
+signals:
+    void graph(double **);
+
+public slots:
+    void prepareToGraph();
 };
 
 #endif // UI_H

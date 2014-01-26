@@ -6,6 +6,8 @@ Mechanics::Mechanics(QWidget *parent) :
     setMinimumSize(400,400);
 }
 
+//---------------------------------------------------------
+
 void Mechanics::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
@@ -14,8 +16,18 @@ void Mechanics::paintEvent(QPaintEvent *)
     painter.drawText(10,10,"Тут будет график");
 
     painter.end();
-
 }
+
+//---------------------------------------------------------
+
 Mechanics::~Mechanics()
 {
+
+}
+
+//---------------------------------------------------------
+
+void Mechanics::graph(double **array)
+{
+
 }
