@@ -85,15 +85,15 @@ UI::~UI()
 
 void UI::prepareToGraph()
 {
-    double **array = new double*[3];
+    qreal **array = new qreal*[3];
     for(int i = 0; i < 3; i++)
-        array[i] = new double[14];
+        array[i] = new qreal[14];
 
     for(int row = 0; row < 3; row++)
         for(int column = 0; column < 14; column++)
-            if (tableWidget->item(row,column)->text().isEmpty())
+            if (tableWidget->item(row, column)->text().isEmpty())
                 array[row][column] = 0;
             else
-                array[row][column] = tableWidget->item(row,column)->text().toDouble();
+                array[row][column] = tableWidget->item(row, column)->text().toDouble();
     graph(array);
 }

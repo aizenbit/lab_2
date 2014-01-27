@@ -18,7 +18,7 @@ public:
 signals:
 
 public slots:
-    void graph(double **array);
+    void graph(qreal **array);
 
 };
 
