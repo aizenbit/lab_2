@@ -11,11 +11,11 @@ class UI : public QWidget
 private:
     Mechanics *mechanics;
     QTableWidget *tableWidget;
-    QLabel *dLabel, *lLabel, *nLabel;
+    QLabel *dLabel, *lLabel, *nLabel, *fi0Label;
     QPushButton *graphButton, *browseButton;
-    QHBoxLayout *mainLayout, *dLayout, *lLayout, *nLayout;
+    QHBoxLayout *mainLayout, *dLayout, *lLayout, *nLayout, *fi0Layout;
     QVBoxLayout *dataLayout;
-    QDoubleSpinBox *dSpinBox, *lSpinBox;
+    QDoubleSpinBox *dSpinBox, *lSpinBox, *fi0SpinBox;
     QLineEdit *nLineEdit;
 
 public:
