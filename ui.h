@@ -23,7 +23,7 @@ public:
     ~UI();
 
 signals:
-    void graph(double **);
+    void graph(qreal **);
 
 public slots:
     void prepareToGraph();

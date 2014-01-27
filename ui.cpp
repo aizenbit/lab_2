@@ -8,6 +8,7 @@ UI::UI(QWidget *parent)
     //-----------------------Buttons-----------------------
     graphButton = new QPushButton(tr("Graph"));
     browseButton = new QPushButton(tr("Browse"));
+    browseButton->setDisabled(true);
 
     //---------------------TableWidget---------------------
     tableWidget = new QTableWidget(3,14);
@@ -65,7 +66,7 @@ UI::UI(QWidget *parent)
 
     //---------------------Connections---------------------
     connect(graphButton, SIGNAL(clicked()), this, SLOT(prepareToGraph()));
-    connect(this,SIGNAL(graph(double**)), mechanics, SLOT(graph(double**)));
+    connect(this,SIGNAL(graph(qreal**)), mechanics, SLOT(graph(qreal**)));
 }
 
 //---------------------------------------------------------
@@ -95,5 +96,6 @@ void UI::prepareToGraph()
                 array[row][column] = 0;
             else
                 array[row][column] = tableWidget->item(row, column)->text().toDouble();
-    graph(array);
+
+    emit graph(array);
 }

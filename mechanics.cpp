@@ -32,7 +32,7 @@ void Mechanics::graph(qreal **array)
 {
     pointList->clear();
     for(int column = 0; column < 14; column++)
-        if(!array[0][column] && !array[1][column] && !array[2][column])
+        if(array[0][column] && array[1][column] && array[2][column])
         {
             qreal m = array[0][column];
             qreal alpha = array[1][column] - array[2][column];
@@ -40,15 +40,18 @@ void Mechanics::graph(qreal **array)
                 *pointList << QPointF(m, sin(alpha) * sin(alpha));
         }
 
-    qreal maxM = pointList->last().rx();
-    qreal height = this->height();
-    qreal width = this->width();
-    for(int i = 0; i < pointList->size(); i++)
+    if (!pointList->isEmpty())
     {
-        qreal x = pointList->takeAt(i).rx();
-        qreal y = pointList->takeAt(i).ry();
-        pointList->takeAt(i).setX(x / maxM * height);
-        pointList->takeAt(i).setY(y * width);
+        qreal maxM = pointList->last().rx();
+        qreal height = this->height();
+        qreal width = this->width();
+        for(int i = 0; i < pointList->size(); i++)
+        {
+            qreal x = pointList->value(i).rx();
+            qreal y = pointList->value(i).ry();
+            pointList->value(i).setX(x / maxM * height);
+            pointList->value(i).setY(y * width);
+        }
+        repaint();
     }
-    repaint();
 }
