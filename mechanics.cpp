@@ -54,4 +54,8 @@ void Mechanics::graph(qreal **array)
         }
         repaint();
     }
+
+    for (int i = 0; i < 3; i++)
+            delete[] array[i];
+    delete[] array;
 }
