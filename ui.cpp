@@ -54,18 +54,22 @@ UI::UI(QWidget *parent)
     dLayout = new QHBoxLayout();
     dLayout->addWidget(dLabel);
     dLayout->addWidget(dSpinBox);
+    dLayout->addSpacing(150);
 
     lLayout = new QHBoxLayout();
     lLayout->addWidget(lLabel);
     lLayout->addWidget(lSpinBox);
+    lLayout->addSpacing(150);
 
     fi0Layout = new QHBoxLayout();
     fi0Layout->addWidget(fi0Label);
     fi0Layout->addWidget(fi0SpinBox);
+    fi0Layout->addSpacing(150);
 
     nLayout = new QHBoxLayout();
     nLayout->addWidget(nLabel);
     nLayout->addWidget(nLineEdit);
+    nLayout->addSpacing(150);
 
     dataLayout = new QVBoxLayout();
     dataLayout->addWidget(tableWidget);

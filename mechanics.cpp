@@ -17,9 +17,17 @@ void Mechanics::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
     painter.begin(this);
+
     painter.setPen(Qt::black);
+    painter.drawLine(13,height()-17,width()-15,height()-17);
+    painter.drawLine(13,height()-17,13,5);
+    painter.drawText(5,height()-5,"0");
+    painter.drawText(0,13,"m");
+    painter.drawText(width()-50,height()-5,"sin^2(α)");
+
     for(int i = 1; i < pointList->size(); i++)
         painter.drawLine(pointList->at(i), pointList->at(i-1));
+
     painter.end();
 }
 
