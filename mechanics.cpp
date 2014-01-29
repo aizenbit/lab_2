@@ -4,10 +4,15 @@ Mechanics::Mechanics(QWidget *parent) :
     QWidget(parent)
 {
     pointList = new QList<QPointF>;
+
     d = 0.5;
     l = 0.651;
     n = 0;
-    fi0 = 0;
+
+    array = new qreal*[3];
+    for(int i = 0; i < 3; i++)
+        array[i] = new qreal[14];
+
     setMinimumSize(400,400);
 }
 
@@ -36,20 +41,26 @@ void Mechanics::paintEvent(QPaintEvent *)
 Mechanics::~Mechanics()
 {
     delete pointList;
+
+    for (int i = 0; i < 3; i++)
+        delete[] array[i];
+    delete[] array;
 }
 
 //---------------------------------------------------------
 
-void Mechanics::graph(qreal **array)
+void Mechanics::graph()
 {
     pointList->clear();
     for(int column = 0; column < 14; column++)
-        if(array[0][column] && array[1][column])
         {
             qreal m = array[0][column];
-            qreal alpha = fi0 - array[2][column];
-            if (alpha > 0)
+            qreal alpha = array[1][column] - array[2][column];
+            if ((alpha > 0) && (alpha < 30))
+            {
+                alpha = alpha / 180 * 3.14156535; //потому что sin() принимает радианы
                 *pointList << QPointF(m, sin(alpha) * sin(alpha));
+            }
         }
 
     if (!pointList->isEmpty())
@@ -66,10 +77,6 @@ void Mechanics::graph(qreal **array)
         }
         repaint();
     }
-
-    for (int i = 0; i < 2; i++)
-            delete[] array[i];
-    delete[] array;
 }
 
 //---------------------------------------------------------
@@ -84,13 +91,6 @@ qreal Mechanics::getD()
 qreal Mechanics::getL()
 {
     return l;
-}
-
-//---------------------------------------------------------
-
-qreal Mechanics::getFi0()
-{
-    return fi0;
 }
 
 //---------------------------------------------------------
@@ -118,10 +118,10 @@ void Mechanics::setL(qreal newL)
 
 //---------------------------------------------------------
 
-void Mechanics::setFi0(qreal newFi0)
+void Mechanics::setDataToArray(int row, int column, qreal data)
 {
-    if(newFi0 > 0)
-        fi0 = newFi0;
+    if (data >= 0)
+        array[row][column] = data;
 }
 
 //---------------------------------------------------------

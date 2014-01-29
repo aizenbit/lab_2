@@ -11,11 +11,11 @@ class UI : public QWidget
 private:
     Mechanics *mechanics;
     QTableWidget *tableWidget;
-    QLabel *dLabel, *lLabel, *nLabel, *fi0Label;
-    QPushButton *graphButton, *browseButton;
-    QHBoxLayout *mainLayout, *dLayout, *lLayout, *nLayout, *fi0Layout;
+    QLabel *dLabel, *lLabel, *nLabel,*d2Label, *l2Label;
+    QPushButton *graphButton, *browseButton, *aboutButton;
+    QHBoxLayout *mainLayout, *dLayout, *lLayout, *nLayout;
     QVBoxLayout *dataLayout;
-    QDoubleSpinBox *dSpinBox, *lSpinBox, *fi0SpinBox;
+    QDoubleSpinBox *dSpinBox, *lSpinBox;
     QLineEdit *nLineEdit;
 
 public:
@@ -24,9 +24,10 @@ public:
 
 signals:
     void graph(qreal **);
+    void dataFromTable(int, int, qreal);
 
 public slots:
-    void prepareToGraph();
+    void prepareToGraph(int,int);
 };
 
 #endif // UI_H
