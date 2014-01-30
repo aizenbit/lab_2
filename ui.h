@@ -18,6 +18,7 @@ private:
     QDoubleSpinBox *dSpinBox, *lSpinBox;
     QLineEdit *nLineEdit;
 
+
 public:
     UI(QWidget *parent = 0);
     ~UI();
@@ -28,6 +29,7 @@ signals:
 
 public slots:
     void prepareToGraph(int,int);
+    void browse();
 };
 
 #endif // UI_H

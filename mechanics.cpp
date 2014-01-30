@@ -22,7 +22,6 @@ void Mechanics::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
     painter.begin(this);
-
     painter.setPen(Qt::black);
     painter.drawLine(13,height()-17,width()-15,height()-17);
     painter.drawLine(13,height()-17,13,5);
@@ -56,10 +55,10 @@ void Mechanics::graph()
         {
             qreal m = array[0][column];
             qreal alpha = array[1][column] - array[2][column];
-            if ((alpha > 0) && (alpha < 30))
+            if ((alpha > 0) && (alpha < 30) && (m > 0))
             {
                 alpha = alpha / 180 * 3.14156535; //потому что sin() принимает радианы
-                *pointList << QPointF(m, sin(alpha) * sin(alpha));
+                *pointList << QPointF(sin(alpha) * sin(alpha), m);
             }
         }
 
@@ -72,8 +71,8 @@ void Mechanics::graph()
         {
             qreal x = pointList->value(i).rx();
             qreal y = pointList->value(i).ry();
-            pointList->value(i).setX(x / maxM * height);
-            pointList->value(i).setY(y * width);
+            pointList->value(i).setX(x / maxM * height + 13);
+            pointList->value(i).setY(width - (y * width)-17);
         }
         repaint();
     }

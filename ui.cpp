@@ -10,7 +10,6 @@ UI::UI(QWidget *parent)
     graphButton = new QPushButton(tr("Найти n"));
     browseButton = new QPushButton(tr("Из файла"));
     aboutButton = new QPushButton(tr("О программе"));
-    browseButton->setDisabled(true);
     aboutButton->setDisabled(true);
     graphButton->setMaximumWidth(233);
     browseButton->setMaximumWidth(233);
@@ -85,6 +84,7 @@ UI::UI(QWidget *parent)
 
     //---------------------Connections---------------------
     connect(graphButton, SIGNAL(clicked()), mechanics, SLOT(graph()));
+    connect(browseButton, SIGNAL(clicked()), this, SLOT(browse()));
     //connect(this, SIGNAL(graph(qreal**)), mechanics, SLOT(graph(qreal**)));
     connect(dSpinBox, SIGNAL(valueChanged(double)), mechanics, SLOT(setD(qreal)));
     connect(lSpinBox, SIGNAL(valueChanged(double)), mechanics, SLOT(setL(qreal)));
@@ -114,3 +114,20 @@ void UI::prepareToGraph(int row, int column)
     if (ok)
         emit dataFromTable(row, column, data);
 }
+
+//---------------------------------------------------------
+
+void UI::browse()
+{
+    QString path = QFileDialog::getOpenFileName();
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+            return;
+    while (!file.atEnd())
+    {
+        QByteArray line = file.readLine();
+    }
+
+}
+
+//---------------------------------------------------------
