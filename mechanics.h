@@ -9,8 +9,8 @@ class Mechanics : public QWidget
 
 private:
     virtual void paintEvent(QPaintEvent *);
-    QList<QPointF> *pointList;
-    qreal d, l, n, **array;
+    QList<QPointF> pointList;
+    qreal d, l, n, B, **array;
     void findN();
 
 public:
