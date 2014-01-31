@@ -89,7 +89,7 @@ UI::UI(QWidget *parent)
     connect(dSpinBox, SIGNAL(valueChanged(double)), mechanics, SLOT(setD(qreal)));
     connect(lSpinBox, SIGNAL(valueChanged(double)), mechanics, SLOT(setL(qreal)));
     connect(tableWidget, SIGNAL(cellChanged(int, int)), this, SLOT(prepareToGraph(int, int)));
-    connect(this, SIGNAL(dataFromTable(int,int,qreal)), mechanics, SLOT(setDataToArray(int,int,qreal)));
+    connect(this, SIGNAL(dataFromTable(int, int, qreal)), mechanics, SLOT(setDataToArray(int, int, qreal)));
 }
 
 //---------------------------------------------------------
@@ -126,8 +126,80 @@ void UI::browse()
     while (!file.atEnd())
     {
         QByteArray line = file.readLine();
+
+        switch(line[0])
+        {
+        case 'm':
+            fileToTable(line, 0);
+            break;
+
+        case 'f':
+            if(line[2] == '0')
+                fileToTable(line, 1);
+            if(line[2] == '1')
+                fileToTable(line, 2);
+            break;
+
+        case 'd':
+            fileToSpinBox(line, 0);
+            break;
+
+        case 'l':
+            fileToSpinBox(line, 1);
+            break;
+        }
+
     }
 
 }
 
 //---------------------------------------------------------
+
+void UI::fileToTable(QByteArray &line, int row)
+{
+    QString number = "";
+    int column = 0;
+    for(int i = 3; i <= line.size(); i++)
+    {
+        if((QChar(line[i]).isNumber()) || (line[i]) == '.')
+            number += line[i];
+        else
+        {
+            bool ok;
+            number.toDouble(&ok);
+            if (ok)
+            {
+                tableWidget->item(row, column)->setText(number);
+                number.clear();
+                column++;
+            }
+            if(column >= 14)
+                break;
+        }
+    }
+}
+
+//---------------------------------------------------------
+
+void UI::fileToSpinBox(QByteArray &line, int spinBox)
+{
+    QString number = "";
+    for(int i = 3; i <= line.size(); i++)
+    {
+        if((QChar(line[i]).isNumber()) || (line[i]) == '.')
+            number += line[i];
+        else
+        {
+            bool ok;
+            number.toDouble(&ok);
+            if (ok)
+            {
+                if(spinBox == 0)
+                    dSpinBox->setValue(number.toDouble());
+                if(spinBox == 1)
+                    lSpinBox->setValue(number.toDouble());
+            number.clear();
+            }
+        }
+    }
+}

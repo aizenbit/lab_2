@@ -23,14 +23,14 @@ void Mechanics::paintEvent(QPaintEvent *)
     QPainter painter(this);
     painter.begin(this);
     painter.setPen(Qt::black);
-    painter.drawLine(13,height()-17,width()-15,height()-17);
-    painter.drawLine(13,height()-17,13,5);
-    painter.drawText(5,height()-5,"0");
-    painter.drawText(0,13,"m");
-    painter.drawText(width()-50,height()-5,"sin^2(α)");
+    painter.drawLine(13, height() - 17, width() - 15, height() - 17);
+    painter.drawLine(13, height() - 17, 13, 5);
+    painter.drawText(5, height() - 5, "0");
+    painter.drawText(0 ,13, "m");
+    painter.drawText(width()-50, height()-5, "sin^2(α)");
 
     for(int i = 1; i < pointList->size(); i++)
-        painter.drawLine(pointList->at(i), pointList->at(i-1));
+        painter.drawLine(pointList->at(i), pointList->at(i - 1));
 
     painter.end();
 }
@@ -72,7 +72,7 @@ void Mechanics::graph()
             qreal x = pointList->value(i).rx();
             qreal y = pointList->value(i).ry();
             pointList->value(i).setX(x / maxM * height + 13);
-            pointList->value(i).setY(width - (y * width)-17);
+            pointList->value(i).setY(width - (y * width) - 17);
         }
         repaint();
     }
