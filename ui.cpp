@@ -85,11 +85,12 @@ UI::UI(QWidget *parent)
     //---------------------Connections---------------------
     connect(graphButton, SIGNAL(clicked()), mechanics, SLOT(graph()));
     connect(browseButton, SIGNAL(clicked()), this, SLOT(browse()));
-    //connect(this, SIGNAL(graph(qreal**)), mechanics, SLOT(graph(qreal**)));
+
     connect(dSpinBox, SIGNAL(valueChanged(double)), mechanics, SLOT(setD(qreal)));
     connect(lSpinBox, SIGNAL(valueChanged(double)), mechanics, SLOT(setL(qreal)));
     connect(tableWidget, SIGNAL(cellChanged(int, int)), this, SLOT(prepareToGraph(int, int)));
     connect(this, SIGNAL(dataFromTable(int, int, qreal)), mechanics, SLOT(setDataToArray(int, int, qreal)));
+    connect(mechanics, SIGNAL(nChanged(qreal)), this, SLOT(setN(qreal)));
 }
 
 //---------------------------------------------------------
@@ -198,8 +199,17 @@ void UI::fileToSpinBox(QByteArray &line, int spinBox)
                     dSpinBox->setValue(number.toDouble());
                 if(spinBox == 1)
                     lSpinBox->setValue(number.toDouble());
-            number.clear();
+                number.clear();
             }
         }
     }
+}
+
+//---------------------------------------------------------
+
+void UI::setN(qreal n)
+{
+    QString nString;
+    nString.setNum(n);
+    nLineEdit->setText(nString);
 }

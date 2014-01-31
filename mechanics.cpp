@@ -58,10 +58,13 @@ void Mechanics::graph()
             if ((alpha > 0) && (alpha < 30) && (m > 0))
             {
                 alpha = alpha / 180 * 3.14156535; //потому что sin() принимает радианы
-                *pointList << QPointF(sin(alpha) * sin(alpha), m);
+                *pointList << QPointF(sin(alpha) * sin(alpha) * 1000, m); //!!!
             }
         }
 
+    findN();
+
+    //!!!
     if (!pointList->isEmpty())
     {
         qreal maxM = pointList->last().rx();
@@ -71,11 +74,25 @@ void Mechanics::graph()
         {
             qreal x = pointList->value(i).rx();
             qreal y = pointList->value(i).ry();
-            pointList->value(i).setX(x / maxM * height + 13);
-            pointList->value(i).setY(width - (y * width) - 17);
+            pointList->value(i).setX(width - ((y * width) - 17));
+            pointList->value(i).setY(height - (x / maxM * width + 13));
         }
+
         repaint();
     }
+}
+
+
+//---------------------------------------------------------
+
+void Mechanics::findN()
+{
+    qreal B = 0;
+    for(int i = 1; i < pointList->size(); i++)
+        B += pointList->value(i).ry() / pointList->value(i).rx();
+    B /= pointList->size();
+    n = d / B / l;
+    emit nChanged(n);
 }
 
 //---------------------------------------------------------
@@ -90,13 +107,6 @@ qreal Mechanics::getD()
 qreal Mechanics::getL()
 {
     return l;
-}
-
-//---------------------------------------------------------
-
-qreal Mechanics::getN()
-{
-    return n;
 }
 
 //---------------------------------------------------------

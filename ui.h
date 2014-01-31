@@ -20,7 +20,6 @@ private:
     void fileToTable(QByteArray &line, int row);
     void fileToSpinBox(QByteArray &line, int spinBox);
 
-
 public:
     UI(QWidget *parent = 0);
     ~UI();
@@ -32,6 +31,7 @@ signals:
 public slots:
     void prepareToGraph(int,int);
     void browse();
+    void setN(qreal n);
 };
 
 #endif // UI_H

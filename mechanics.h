@@ -11,15 +11,16 @@ private:
     virtual void paintEvent(QPaintEvent *);
     QList<QPointF> *pointList;
     qreal d, l, n, **array;
+    void findN();
 
 public:
     Mechanics(QWidget *parent = 0);
     ~Mechanics();
     qreal getD();
     qreal getL();
-    qreal getN();
 
 signals:
+    void nChanged(qreal);
 
 public slots:
     void graph();
