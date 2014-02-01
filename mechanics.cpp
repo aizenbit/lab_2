@@ -29,13 +29,16 @@ void Mechanics::paintEvent(QPaintEvent *)
     painter.drawText(0 ,13, "m");
     painter.drawText(width()-50, height()-5, "sin^2(α)");
 
-    for(int i = 1; i < pointList.size(); i++)
+    if(!pointList.isEmpty())
     {
-        painter.drawLine(pointList.at(i), pointList.at(i - 1));
-        painter.drawEllipse(pointList.at(i - 1),2,2);
+        for(int i = 1; i < pointList.size(); i++)
+        {
+            painter.drawLine(pointList.at(i), pointList.at(i - 1));
+            painter.drawEllipse(pointList.at(i - 1),2,2);
+        }
+       // painter.setPen(Qt::blue);
+       // painter.drawLine(13,17,?,?);
     }
-    painter.setPen(Qt::blue);
-    painter.drawLine(13,17,width(),height());
 
     painter.end();
 }

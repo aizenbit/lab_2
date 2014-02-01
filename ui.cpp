@@ -10,7 +10,6 @@ UI::UI(QWidget *parent)
     graphButton = new QPushButton(tr("Найти n"));
     browseButton = new QPushButton(tr("Из файла"));
     aboutButton = new QPushButton(tr("О программе"));
-    aboutButton->setDisabled(true);
     graphButton->setMaximumWidth(233);
     browseButton->setMaximumWidth(233);
 
@@ -50,6 +49,14 @@ UI::UI(QWidget *parent)
 
     nLineEdit->setReadOnly(true);
 
+    //----------------------aboutBox-----------------------
+    aboutBox = new QMessageBox();
+    aboutBox->setWindowTitle(tr("О программе"));
+    aboutBox->setStandardButtons(QMessageBox::Ok);
+    aboutBox->setText(tr("Программа, выполняющая лабораторную работу №2 \"Определение показателя преломления "
+                         "интерферомическим методом\" из учебного пособия \"ОПТИКА. ФИЗИЧЕСКИЙ ПРАКТИКУМ\""
+                         " (авторы А.В. Михельсон, Т.И.Папушина, А.А.Повзнер)"));
+
     //-----------------------Layouts-----------------------
     dLayout = new QHBoxLayout();
     dLayout->addWidget(dLabel);
@@ -85,7 +92,7 @@ UI::UI(QWidget *parent)
     //---------------------Connections---------------------
     connect(graphButton, SIGNAL(clicked()), mechanics, SLOT(graph()));
     connect(browseButton, SIGNAL(clicked()), this, SLOT(browse()));
-
+    connect(aboutButton, SIGNAL(clicked()), aboutBox, SLOT(exec()));
     connect(dSpinBox, SIGNAL(valueChanged(double)), mechanics, SLOT(setD(qreal)));
     connect(lSpinBox, SIGNAL(valueChanged(double)), mechanics, SLOT(setL(qreal)));
     connect(tableWidget, SIGNAL(cellChanged(int, int)), this, SLOT(prepareToGraph(int, int)));
@@ -103,6 +110,7 @@ UI::~UI()
     delete dSpinBox, lSpinBox;
     delete nLineEdit;
     delete dLayout, lLayout, nLayout, dataLayout, mainLayout;
+    delete aboutBox;
     delete mechanics;
 }
 

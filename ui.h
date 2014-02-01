@@ -17,6 +17,7 @@ private:
     QVBoxLayout *dataLayout;
     QDoubleSpinBox *dSpinBox, *lSpinBox;
     QLineEdit *nLineEdit;
+    QMessageBox *aboutBox;
     void fileToTable(QByteArray &line, int row);
     void fileToSpinBox(QByteArray &line, int spinBox);
 
