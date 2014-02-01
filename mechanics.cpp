@@ -94,6 +94,7 @@ void Mechanics::graph()
 
 void Mechanics::findN()
 {
+    B = 0;
     for(int i = 1; i < pointList.size(); i++)
         B += pointList[i].ry() / pointList[i].rx();
     B /= pointList.size();

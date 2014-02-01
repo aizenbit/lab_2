@@ -10,8 +10,6 @@ UI::UI(QWidget *parent)
     graphButton = new QPushButton(tr("Найти n"));
     browseButton = new QPushButton(tr("Из файла"));
     aboutButton = new QPushButton(tr("О программе"));
-    graphButton->setMaximumWidth(233);
-    browseButton->setMaximumWidth(233);
 
     //---------------------TableWidget---------------------
     tableWidget = new QTableWidget(3,14);
