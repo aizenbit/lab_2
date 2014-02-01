@@ -97,13 +97,13 @@ UI::UI(QWidget *parent)
 
 UI::~UI()
 {
-    delete mechanics;
     delete graphButton, browseButton, aboutButton;
     delete tableWidget;
     delete nLabel, lLabel, dLabel, l2Label, d2Label;
     delete dSpinBox, lSpinBox;
     delete nLineEdit;
     delete dLayout, lLayout, nLayout, dataLayout, mainLayout;
+    delete mechanics;
 }
 
 //---------------------------------------------------------

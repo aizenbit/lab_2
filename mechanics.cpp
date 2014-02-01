@@ -94,7 +94,7 @@ void Mechanics::findN()
     for(int i = 1; i < pointList.size(); i++)
         B += pointList[i].ry() / pointList[i].rx();
     B /= pointList.size();
-    n = d / B / l;
+    n = d / B / l * 1000;
     emit nChanged(n);
 }
 
