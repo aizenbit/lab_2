@@ -36,8 +36,8 @@ void Mechanics::paintEvent(QPaintEvent *)
             painter.drawLine(pointList.at(i), pointList.at(i - 1));
             painter.drawEllipse(pointList.at(i - 1),2,2);
         }
-       // painter.setPen(Qt::blue);
-       // painter.drawLine(13,17,?,?);
+        painter.setPen(Qt::blue);
+        painter.drawLine(13, height() - 17, width(), -B * 0.25);
     }
 
     painter.end();
