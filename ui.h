@@ -13,11 +13,11 @@ private:
     QTableWidget *tableWidget;
     QLabel *dLabel, *lLabel, *nLabel,*d2Label, *l2Label;
     QPushButton *graphButton, *browseButton, *aboutButton;
-    QHBoxLayout *mainLayout, *dLayout, *lLayout, *nLayout;
-    QVBoxLayout *dataLayout;
+    QHBoxLayout *dataLayout, *dLayout, *lLayout, *nLayout;
+    QVBoxLayout *mainLayout;
     QDoubleSpinBox *dSpinBox, *lSpinBox;
     QLineEdit *nLineEdit;
-    QMessageBox *aboutBox;
+    QMessageBox *aboutBox, *errorBox;
     void fileToTable(QByteArray &line, int row);
     void fileToSpinBox(QByteArray &line, int spinBox);
 
@@ -33,6 +33,7 @@ public slots:
     void prepareToGraph(int,int);
     void browse();
     void setN(qreal n);
+    void error(int);
 };
 
 #endif // UI_H

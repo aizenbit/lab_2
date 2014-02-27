@@ -2,6 +2,7 @@
 #define MECHANICS_H
 
 #include <QtWidgets>
+#include "errorCodes.h"
 
 class Mechanics : public QWidget
 {
@@ -21,6 +22,7 @@ public:
 
 signals:
     void nChanged(qreal);
+    void err(int);
 
 public slots:
     void graph();

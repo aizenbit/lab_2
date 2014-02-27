@@ -17,4 +17,5 @@ SOURCES += main.cpp\
     mechanics.cpp
 
 HEADERS  += ui.h \
-    mechanics.h
+    mechanics.h \
+    errorCodes.h

@@ -23,12 +23,15 @@ void Mechanics::paintEvent(QPaintEvent *)
     painter.begin(this);
     painter.setPen(Qt::black);
     painter.setBrush(Qt::black);
+
+    //рисуем координатные оси
     painter.drawLine(13, height() - 17, width() - 15, height() - 17);
     painter.drawLine(13, height() - 17, 13, 5);
     painter.drawText(5, height() - 5, "0");
     painter.drawText(0 ,13, "m");
     painter.drawText(width()-50, height()-5, "sin^2(α)");
 
+    //рисуем точки графика, соединяем их линиями
     if(!pointList.isEmpty())
     {
         for(int i = 1; i < pointList.size(); i++)
@@ -58,6 +61,8 @@ Mechanics::~Mechanics()
 void Mechanics::graph()
 {
     pointList.clear();
+    //заполняем pointList данными из array, иначе говоря,
+    //переводим данные из таблицы в точки графика
     for(int column = 0; column < 14; column++)
         {
             qreal m = array[0][column];
@@ -71,12 +76,18 @@ void Mechanics::graph()
 
     findN();
 
+    //преобразуем точки так, чтобы их можно было нарисовать
+    //на ограниченной области графика(виджета Mechanics)
     if (!pointList.isEmpty())
     {
+        //предполагаем, что пользователь вводил данные в порядке возрастания
+        //да, я знаю, что не стоит так делать, но...
         qreal maxM = pointList.last().ry();
         qreal maxSin = pointList.last().rx();
-        qreal height = this->height() - 17; //высота и ширина графика
+        //высота и ширина графика
+        qreal height = this->height() - 17;
         qreal width = this->width();
+
         for(int i = 0; i < pointList.size(); i++)
         {
             qreal x = pointList.value(i).rx();
@@ -122,6 +133,8 @@ void Mechanics::setD(qreal newD)
 {
     if(newD > 0)
         d = newD;
+    else
+        emit err(wrongData);
 }
 
 //---------------------------------------------------------
@@ -130,6 +143,8 @@ void Mechanics::setL(qreal newL)
 {
     if(newL > 0)
         l = newL;
+    else
+        emit err(wrongData);
 }
 
 //---------------------------------------------------------
@@ -138,6 +153,8 @@ void Mechanics::setDataToArray(int row, int column, qreal data)
 {
     if (data >= 0)
         array[row][column] = data;
+    else
+        emit err(wrongData);
 }
 
 //---------------------------------------------------------

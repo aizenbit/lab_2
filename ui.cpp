@@ -18,12 +18,16 @@ UI::UI(QWidget *parent)
     QStringList verticalHeaders;
     verticalHeaders << "m" << "φ0" << "φ1" ;
     tableWidget->setVerticalHeaderLabels(verticalHeaders);
-    tableWidget->setFixedHeight(113); //величины вывел эмпирически
-    tableWidget->setFixedWidth(233);
+    tableWidget->setFixedHeight(92); //величины вывел эмпирически
+    tableWidget->setFixedWidth(732);
 
-    for(int row = 0;row < 3; row++)
-        for(int column = 0; column < 14; column++)
+
+    for(int column = 0; column < 14; column++)
+    {
+        for(int row = 0;row < 3; row++)
             tableWidget->setItem(row, column, new QTableWidgetItem("0.0"));
+        tableWidget->setColumnWidth(column,50);
+    }
 
     //-----------------------Labels------------------------
     dLabel = new QLabel("d=");
@@ -55,6 +59,12 @@ UI::UI(QWidget *parent)
                          "интерферомическим методом\" из учебного пособия \"ОПТИКА. ФИЗИЧЕСКИЙ ПРАКТИКУМ\""
                          " (авторы А.В. Михельсон, Т.И.Папушина, А.А.Повзнер)"));
 
+    //----------------------errorBox-----------------------
+    errorBox = new QMessageBox();
+    errorBox->setWindowTitle(tr("Ошибка"));
+    aboutBox->setStandardButtons(QMessageBox::Ok);
+    aboutBox->setText(tr("Вы не должны были увидеть эту ошибку. Мне очень жаль"));
+
     //-----------------------Layouts-----------------------
     dLayout = new QHBoxLayout();
     dLayout->addWidget(dLabel);
@@ -73,8 +83,7 @@ UI::UI(QWidget *parent)
     nLayout->addWidget(nLineEdit);
     nLayout->setAlignment(Qt::AlignLeft);
 
-    dataLayout = new QVBoxLayout();
-    dataLayout->addWidget(tableWidget);
+    dataLayout = new QHBoxLayout();
     dataLayout->addLayout(dLayout);
     dataLayout->addLayout(lLayout);
     dataLayout->addLayout(nLayout);
@@ -82,8 +91,9 @@ UI::UI(QWidget *parent)
     dataLayout->addWidget(graphButton);
     dataLayout->addWidget(aboutButton);
 
-    mainLayout = new QHBoxLayout();
+    mainLayout = new QVBoxLayout();
     mainLayout->addWidget(mechanics);
+    mainLayout->addWidget(tableWidget);
     mainLayout->addLayout(dataLayout);
     setLayout(mainLayout);
 
@@ -96,19 +106,37 @@ UI::UI(QWidget *parent)
     connect(tableWidget, SIGNAL(cellChanged(int, int)), this, SLOT(prepareToGraph(int, int)));
     connect(this, SIGNAL(dataFromTable(int, int, qreal)), mechanics, SLOT(setDataToArray(int, int, qreal)));
     connect(mechanics, SIGNAL(nChanged(qreal)), this, SLOT(setN(qreal)));
+    connect(mechanics, SIGNAL(err(int)), this, SLOT(error(int)));
 }
 
 //---------------------------------------------------------
 
 UI::~UI()
 {
-    delete graphButton, browseButton, aboutButton;
+    delete browseButton;
+    delete aboutButton;
+
     delete tableWidget;
-    delete nLabel, lLabel, dLabel, l2Label, d2Label;
-    delete dSpinBox, lSpinBox;
+
+    delete nLabel;
+    delete lLabel;
+    delete dLabel;
+    delete l2Label;
+    delete d2Label;
+
+    delete dSpinBox;
+    delete lSpinBox;
     delete nLineEdit;
-    delete dLayout, lLayout, nLayout, dataLayout, mainLayout;
+
+    delete dLayout;
+    delete lLayout;
+    delete nLayout;
+
+    delete dataLayout;
+    delete mainLayout;
+
     delete aboutBox;
+    delete errorBox;
     delete mechanics;
 }
 
@@ -120,6 +148,8 @@ void UI::prepareToGraph(int row, int column)
     qreal data = tableWidget->item(row, column)->text().toDouble(&ok);
     if (ok)
         emit dataFromTable(row, column, data);
+    else
+        error(wrongData);
 }
 
 //---------------------------------------------------------
@@ -180,6 +210,7 @@ void UI::fileToTable(QByteArray &line, int row)
                 number.clear();
                 column++;
             }
+
             if(column >= 14)
                 break;
         }
@@ -218,4 +249,22 @@ void UI::setN(qreal n)
     QString nString;
     nString.setNum(n);
     nLineEdit->setText(nString);
+}
+
+//---------------------------------------------------------
+
+void UI::error(int code)
+{
+    switch(code)
+    {
+    case pointListIsEmpty:
+        errorBox->setText(tr("Список точек пуст!"));
+        break;
+    case wrongData:
+        errorBox->setText(tr("Ошибочные данные"));
+        break;
+    default:
+        errorBox->setText(tr("Неизвестная ошибка"));
+    }
+    errorBox->exec();
 }
