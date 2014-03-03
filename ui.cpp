@@ -62,8 +62,8 @@ UI::UI(QWidget *parent)
     //----------------------errorBox-----------------------
     errorBox = new QMessageBox();
     errorBox->setWindowTitle(tr("Ошибка"));
-    aboutBox->setStandardButtons(QMessageBox::Ok);
-    aboutBox->setText(tr("Вы не должны были увидеть эту ошибку. Мне очень жаль"));
+    errorBox->setStandardButtons(QMessageBox::Ok);
+    errorBox->setText(tr("Вы не должны были увидеть эту ошибку. Мне очень жаль"));
 
     //-----------------------Layouts-----------------------
     dLayout = new QHBoxLayout();

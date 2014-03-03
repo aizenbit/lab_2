@@ -3,6 +3,7 @@
 Mechanics::Mechanics(QWidget *parent) :
     QWidget(parent)
 {
+    //значения по умолчанию взяты из методички
     d = 0.5;
     l = 0.651;
     n = 0;
@@ -31,14 +32,15 @@ void Mechanics::paintEvent(QPaintEvent *)
     painter.drawText(0 ,13, "m");
     painter.drawText(width()-50, height()-5, "sin^2(α)");
 
-    //рисуем точки графика, соединяем их линиями
     if(!pointList.isEmpty())
     {
+        //рисуем точки графика, соединяем их линиями
         for(int i = 1; i < pointList.size(); i++)
         {
             painter.drawLine(pointList.at(i), pointList.at(i - 1));
             painter.drawEllipse(pointList.at(i - 1),2,2);
         }
+        //рисуем линию тренда
         painter.setPen(Qt::blue);
         painter.drawLine(13, height() - 17, width(), -B * 0.25);
     }
@@ -76,18 +78,23 @@ void Mechanics::graph()
 
     findN();
 
-    //преобразуем точки так, чтобы их можно было нарисовать
-    //на ограниченной области графика(виджета Mechanics)
+
     if (!pointList.isEmpty())
     {
-        //предполагаем, что пользователь вводил данные в порядке возрастания
-        //да, я знаю, что не стоит так делать, но...
+        //сортируем иксы пузырьком по возрастанию
+        for(int i = 0; i < pointList.size()-1; i++)
+            for(int j = 0; j < pointList.size()-i; j++)
+                if (pointList[i].rx() > pointList[i+1].rx())
+                    pointList.swap(i,i+1);
+
         qreal maxM = pointList.last().ry();
         qreal maxSin = pointList.last().rx();
         //высота и ширина графика
         qreal height = this->height() - 17;
         qreal width = this->width();
 
+        //преобразуем точки так, чтобы их можно было нарисовать
+        //на ограниченной области графика(виджета Mechanics)
         for(int i = 0; i < pointList.size(); i++)
         {
             qreal x = pointList.value(i).rx();
