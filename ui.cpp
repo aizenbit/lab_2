@@ -158,8 +158,13 @@ void UI::browse()
 {
     QString path = QFileDialog::getOpenFileName();
     QFile file(path);
+
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-            return;
+    {
+        error(fileNotFound);
+        return;
+    }
+
     while (!file.atEnd())
     {
         QByteArray line = file.readLine();
@@ -184,6 +189,11 @@ void UI::browse()
         case 'l':
             fileToSpinBox(line, 1);
             break;
+        case ' ': case '\n': case '\t': case '\0': case '#':
+            break;
+        default:
+            error(wrongData);
+            return;
         }
 
     }
@@ -262,6 +272,9 @@ void UI::error(int code)
         break;
     case wrongData:
         errorBox->setText(tr("Ошибочные данные"));
+        break;
+    case fileNotFound:
+        errorBox->setText((tr("Файл не найден")));
         break;
     default:
         errorBox->setText(tr("Неизвестная ошибка"));
