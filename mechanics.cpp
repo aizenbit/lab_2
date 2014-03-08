@@ -38,7 +38,7 @@ void Mechanics::paintEvent(QPaintEvent *)
         for(int i = 1; i < pointList.size(); i++)
         {
             painter.drawLine(pointList.at(i), pointList.at(i - 1));
-            painter.drawEllipse(pointList.at(i - 1),2,2);
+            painter.drawEllipse(pointList.at(i - 1), 2, 2);
         }
         //рисуем линию тренда
         painter.setPen(Qt::blue);
@@ -55,7 +55,6 @@ Mechanics::~Mechanics()
     for (int i = 0; i < 3; i++)
         delete[] array[i];
     delete[] array;
-    pointList.clear();
 }
 
 //---------------------------------------------------------
@@ -82,10 +81,10 @@ void Mechanics::graph()
     if (!pointList.isEmpty())
     {
         //сортируем иксы пузырьком по возрастанию
-        for(int i = 0; i < pointList.size()-1; i++)
-            for(int j = 0; j < pointList.size()-i; j++)
-                if (pointList[i].rx() > pointList[i+1].rx())
-                    pointList.swap(i,i+1);
+        for(int i = 0; i < pointList.size() - 1; i++)
+            for(int j = 0; j < pointList.size() - i; j++)
+                if (pointList[i].rx() > pointList[i + 1].rx())
+                    pointList.swap(i, i + 1);
 
         qreal maxM = pointList.last().ry();
         qreal maxSin = pointList.last().rx();

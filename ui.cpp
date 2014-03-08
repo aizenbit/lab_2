@@ -7,9 +7,9 @@ UI::UI(QWidget *parent)
     mechanics = new Mechanics();
 
     //-----------------------Buttons-----------------------
-    graphButton = new QPushButton(tr("Найти n"));
+    graphButton  = new QPushButton(tr("Найти n"));
     browseButton = new QPushButton(tr("Из файла"));
-    aboutButton = new QPushButton(tr("О программе"));
+    aboutButton  = new QPushButton(tr("О программе"));
 
     //---------------------TableWidget---------------------
     tableWidget = new QTableWidget(3,14);
@@ -24,17 +24,17 @@ UI::UI(QWidget *parent)
 
     for(int column = 0; column < 14; column++)
     {
-        for(int row = 0;row < 3; row++)
+        for(int row = 0; row < 3; row++)
             tableWidget->setItem(row, column, new QTableWidgetItem("0.0"));
-        tableWidget->setColumnWidth(column,50);
+        tableWidget->setColumnWidth(column, 50);
     }
 
     //-----------------------Labels------------------------
-    dLabel = new QLabel("d=");
+    dLabel  = new QLabel("d=");
     d2Label = new QLabel(tr("(мм)"));
-    lLabel = new QLabel("λ=");
+    lLabel  = new QLabel("λ=");
     l2Label = new QLabel(tr("(мкм)"));
-    nLabel = new QLabel("n=");
+    nLabel  = new QLabel("n=");
 
     //---------------------VariablesIO---------------------
     dSpinBox = new QDoubleSpinBox();
@@ -56,8 +56,8 @@ UI::UI(QWidget *parent)
     aboutBox->setWindowTitle(tr("О программе"));
     aboutBox->setStandardButtons(QMessageBox::Ok);
     aboutBox->setText(tr("Программа, выполняющая лабораторную работу №2 \"Определение показателя преломления "
-                         "интерферомическим методом\" из учебного пособия \"ОПТИКА. ФИЗИЧЕСКИЙ ПРАКТИКУМ\""
-                         " (авторы А.В. Михельсон, Т.И.Папушина, А.А.Повзнер)"));
+                         "интерферомическим методом\" из учебного пособия \"ОПТИКА. ФИЗИЧЕСКИЙ ПРАКТИКУМ\" "
+                         "(авторы А.В. Михельсон, Т.И.Папушина, А.А.Повзнер)"));
 
     //----------------------errorBox-----------------------
     errorBox = new QMessageBox();
@@ -98,15 +98,15 @@ UI::UI(QWidget *parent)
     setLayout(mainLayout);
 
     //---------------------Connections---------------------
-    connect(graphButton, SIGNAL(clicked()), mechanics, SLOT(graph()));
-    connect(browseButton, SIGNAL(clicked()), this, SLOT(browse()));
-    connect(aboutButton, SIGNAL(clicked()), aboutBox, SLOT(exec()));
-    connect(dSpinBox, SIGNAL(valueChanged(double)), mechanics, SLOT(setD(qreal)));
-    connect(lSpinBox, SIGNAL(valueChanged(double)), mechanics, SLOT(setL(qreal)));
-    connect(tableWidget, SIGNAL(cellChanged(int, int)), this, SLOT(prepareToGraph(int, int)));
-    connect(this, SIGNAL(dataFromTable(int, int, qreal)), mechanics, SLOT(setDataToArray(int, int, qreal)));
-    connect(mechanics, SIGNAL(nChanged(qreal)), this, SLOT(setN(qreal)));
-    connect(mechanics, SIGNAL(err(int)), this, SLOT(error(int)));
+    connect(graphButton,  SIGNAL(clicked()),                      mechanics, SLOT(graph()));
+    connect(browseButton, SIGNAL(clicked()),                      this,      SLOT(browse()));
+    connect(aboutButton,  SIGNAL(clicked()),                      aboutBox,  SLOT(exec()));
+    connect(dSpinBox,     SIGNAL(valueChanged(double)),           mechanics, SLOT(setD(qreal)));
+    connect(lSpinBox,     SIGNAL(valueChanged(double)),           mechanics, SLOT(setL(qreal)));
+    connect(tableWidget,  SIGNAL(cellChanged(int, int)),          this,      SLOT(prepareToGraph(int, int)));
+    connect(this,         SIGNAL(dataFromTable(int, int, qreal)), mechanics, SLOT(setDataToArray(int, int, qreal)));
+    connect(mechanics,    SIGNAL(nChanged(qreal)),                this,      SLOT(setN(qreal)));
+    connect(mechanics,    SIGNAL(err(int)),                       this,      SLOT(error(int)));
 }
 
 //---------------------------------------------------------
@@ -189,8 +189,10 @@ void UI::browse()
         case 'l':
             fileToSpinBox(line, 1);
             break;
+
         case ' ': case '\n': case '\t': case '\0': case '#':
             break;
+
         default:
             error(wrongData);
             return;
