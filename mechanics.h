@@ -1,7 +1,7 @@
 #ifndef MECHANICS_H
 #define MECHANICS_H
 
-#include <QtWidgets>
+#include <QtGui>
 #include "errorCodes.h"
 
 class Mechanics : public QWidget

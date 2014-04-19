@@ -16,7 +16,7 @@ UI::UI(QWidget *parent)
         //в таблице из методички 14 столбцов, посему так
     tableWidget->horizontalHeader()->hide();
     QStringList verticalHeaders;
-    verticalHeaders << "m" << "φ0" << "φ1" ;
+    verticalHeaders << tr("m") << tr("φ0") << tr("φ1") ;
     tableWidget->setVerticalHeaderLabels(verticalHeaders);
     tableWidget->setFixedHeight(92); //величины вывел эмпирически
     tableWidget->setFixedWidth(732);
@@ -30,11 +30,11 @@ UI::UI(QWidget *parent)
     }
 
     //-----------------------Labels------------------------
-    dLabel  = new QLabel("d=");
+    dLabel  = new QLabel(tr("d="));
     d2Label = new QLabel(tr("(мм)"));
-    lLabel  = new QLabel("λ=");
+    lLabel  = new QLabel(tr("λ="));
     l2Label = new QLabel(tr("(мкм)"));
-    nLabel  = new QLabel("n=");
+    nLabel  = new QLabel(tr("n="));
 
     //---------------------VariablesIO---------------------
     dSpinBox = new QDoubleSpinBox();
@@ -157,6 +157,10 @@ void UI::prepareToGraph(int row, int column)
 void UI::browse()
 {
     QString path = QFileDialog::getOpenFileName();
+
+    if(path.isEmpty())
+        return;
+
     QFile file(path);
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))

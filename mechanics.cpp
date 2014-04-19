@@ -28,9 +28,9 @@ void Mechanics::paintEvent(QPaintEvent *)
     //рисуем координатные оси
     painter.drawLine(13, height() - 17, width() - 15, height() - 17);
     painter.drawLine(13, height() - 17, 13, 5);
-    painter.drawText(5, height() - 5, "0");
-    painter.drawText(0 ,13, "m");
-    painter.drawText(width()-50, height()-5, "sin^2(α)");
+    painter.drawText(5, height() - 5, tr("0"));
+    painter.drawText(0 ,13, tr("m"));
+    painter.drawText(width()-50, height()-5, tr("sin^2(α)"));
 
     if(!pointList.isEmpty())
     {

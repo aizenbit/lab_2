@@ -3,10 +3,7 @@
 
 int main(int argc, char *argv[])
 {
-    QStringList paths = QCoreApplication::libraryPaths();
-    paths.append(QCoreApplication::applicationDirPath() + "/plugins");
-    QCoreApplication::setLibraryPaths(paths);
-
+    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
     QApplication a(argc, argv);
     UI ui;
     ui.show();

@@ -1,7 +1,7 @@
 #ifndef UI_H
 #define UI_H
 
-#include <QtWidgets>
+#include <QtGui>
 #include "mechanics.h"
 
 class UI : public QWidget
