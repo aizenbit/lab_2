@@ -59,25 +59,8 @@ Mechanics::~Mechanics()
 
 //---------------------------------------------------------
 
-void Mechanics::graph()
+void Mechanics::prepareToGraph()
 {
-    pointList.clear();
-    //заполняем pointList данными из array, иначе говоря,
-    //переводим данные из таблицы в точки графика
-    for(int column = 0; column < 14; column++)
-        {
-            qreal m = array[0][column];
-            qreal alpha = array[1][column] - array[2][column];
-            if ((alpha > 0) && (alpha < 30) && (m > 0))
-            {
-                alpha = alpha / 180 * 3.14156535; //потому что sin() принимает радианы
-                pointList << QPointF(sin(alpha) * sin(alpha), m);
-            }
-        }
-
-    findN();
-
-
     if (!pointList.isEmpty())
     {
         //сортируем иксы пузырьком по возрастанию
@@ -111,12 +94,30 @@ void Mechanics::graph()
 
 void Mechanics::findN()
 {
+    pointList.clear();
+    //заполняем pointList данными из array, иначе говоря,
+    //переводим данные из таблицы в точки графика
+    for(int column = 0; column < 14; column++)
+        {
+            qreal m = array[0][column];
+            qreal alpha = array[1][column] - array[2][column];
+            if ((alpha > 0) && (alpha < 30) && (m > 0))
+            {
+                alpha = alpha / 180 * Pi; //потому что sin() принимает радианы
+                pointList << QPointF(sin(alpha) * sin(alpha), m);
+            }
+        }
+
+    //вычисляем B и n
     B = 0;
     for(int i = 1; i < pointList.size(); i++)
         B += pointList[i].ry() / pointList[i].rx();
     B /= pointList.size();
     n = d / B / l * 1000;
+
     emit nChanged(n);
+
+    prepareToGraph();
 }
 
 //---------------------------------------------------------

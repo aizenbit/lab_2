@@ -1,6 +1,8 @@
 #ifndef MECHANICS_H
 #define MECHANICS_H
 
+#define Pi 3.1415926535
+
 #include <QtGui>
 #include "errorCodes.h"
 
@@ -12,7 +14,7 @@ private:
     virtual void paintEvent(QPaintEvent *);
     QList<QPointF> pointList;
     qreal d, l, n, B, **array;
-    void findN();
+    void prepareToGraph();
 
 public:
     Mechanics(QWidget *parent = 0);
@@ -25,7 +27,8 @@ signals:
     void err(int);
 
 public slots:
-    void graph();
+
+    void findN();
     void setD(qreal newD);
     void setL(qreal newL);
     void setDataToArray(int row, int column, qreal data);

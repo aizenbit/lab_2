@@ -7,7 +7,7 @@ UI::UI(QWidget *parent)
     mechanics = new Mechanics();
 
     //-----------------------Buttons-----------------------
-    graphButton  = new QPushButton(tr("Найти n"));
+    findNButton  = new QPushButton(tr("Найти n"));
     browseButton = new QPushButton(tr("Из файла"));
     aboutButton  = new QPushButton(tr("О программе"));
 
@@ -20,7 +20,6 @@ UI::UI(QWidget *parent)
     tableWidget->setVerticalHeaderLabels(verticalHeaders);
     tableWidget->setFixedHeight(92); //величины вывел эмпирически
     tableWidget->setFixedWidth(732);
-
 
     for(int column = 0; column < 14; column++)
     {
@@ -88,7 +87,7 @@ UI::UI(QWidget *parent)
     dataLayout->addLayout(lLayout);
     dataLayout->addLayout(nLayout);
     dataLayout->addWidget(browseButton);
-    dataLayout->addWidget(graphButton);
+    dataLayout->addWidget(findNButton);
     dataLayout->addWidget(aboutButton);
 
     mainLayout = new QVBoxLayout();
@@ -98,12 +97,12 @@ UI::UI(QWidget *parent)
     setLayout(mainLayout);
 
     //---------------------Connections---------------------
-    connect(graphButton,  SIGNAL(clicked()),                      mechanics, SLOT(graph()));
+    connect(findNButton,  SIGNAL(clicked()),                      mechanics, SLOT(findN()));
     connect(browseButton, SIGNAL(clicked()),                      this,      SLOT(browse()));
     connect(aboutButton,  SIGNAL(clicked()),                      aboutBox,  SLOT(exec()));
     connect(dSpinBox,     SIGNAL(valueChanged(double)),           mechanics, SLOT(setD(qreal)));
     connect(lSpinBox,     SIGNAL(valueChanged(double)),           mechanics, SLOT(setL(qreal)));
-    connect(tableWidget,  SIGNAL(cellChanged(int, int)),          this,      SLOT(prepareToGraph(int, int)));
+    connect(tableWidget,  SIGNAL(cellChanged(int, int)),          this,      SLOT(prepareDataFromTable(int, int)));
     connect(this,         SIGNAL(dataFromTable(int, int, qreal)), mechanics, SLOT(setDataToArray(int, int, qreal)));
     connect(mechanics,    SIGNAL(nChanged(qreal)),                this,      SLOT(setN(qreal)));
     connect(mechanics,    SIGNAL(err(int)),                       this,      SLOT(error(int)));
@@ -142,7 +141,7 @@ UI::~UI()
 
 //---------------------------------------------------------
 
-void UI::prepareToGraph(int row, int column)
+void UI::prepareDataFromTable(int row, int column)
 {
     bool ok;
     qreal data = tableWidget->item(row, column)->text().toDouble(&ok);
@@ -176,22 +175,22 @@ void UI::browse()
         switch(line[0])
         {
         case 'm':
-            fileToTable(line, 0);
+            fileToTable(line, m);
             break;
 
         case 'f':
             if(line[2] == '0')
-                fileToTable(line, 1);
+                fileToTable(line, fi0);
             if(line[2] == '1')
-                fileToTable(line, 2);
+                fileToTable(line, fi1);
             break;
 
         case 'd':
-            fileToSpinBox(line, 0);
+            fileToSpinBox(line, d);
             break;
 
         case 'l':
-            fileToSpinBox(line, 1);
+            fileToSpinBox(line, l);
             break;
 
         case ' ': case '\n': case '\t': case '\0': case '#':
@@ -208,7 +207,7 @@ void UI::browse()
 
 //---------------------------------------------------------
 
-void UI::fileToTable(QByteArray &line, int row)
+void UI::fileToTable(QByteArray &line, TableRow row)
 {
     QString number = "";
     int column = 0;
@@ -235,7 +234,7 @@ void UI::fileToTable(QByteArray &line, int row)
 
 //---------------------------------------------------------
 
-void UI::fileToSpinBox(QByteArray &line, int spinBox)
+void UI::fileToSpinBox(QByteArray &line, SpinBoxType type)
 {
     QString number = "";
     for(int i = 3; i <= line.size(); i++)
@@ -248,9 +247,9 @@ void UI::fileToSpinBox(QByteArray &line, int spinBox)
             number.toDouble(&ok);
             if (ok)
             {
-                if(spinBox == 0)
+                if(type == 0)
                     dSpinBox->setValue(number.toDouble());
-                if(spinBox == 1)
+                if(type == 1)
                     lSpinBox->setValue(number.toDouble());
                 number.clear();
             }
@@ -260,10 +259,10 @@ void UI::fileToSpinBox(QByteArray &line, int spinBox)
 
 //---------------------------------------------------------
 
-void UI::setN(qreal n)
+void UI::setN(qreal newN)
 {
     QString nString;
-    nString.setNum(n);
+    nString.setNum(newN);
     nLineEdit->setText(nString);
 }
 
@@ -276,14 +275,18 @@ void UI::error(int code)
     case pointListIsEmpty:
         errorBox->setText(tr("Список точек пуст!"));
         break;
+
     case wrongData:
         errorBox->setText(tr("Ошибочные данные"));
         break;
+
     case fileNotFound:
         errorBox->setText((tr("Файл не найден")));
         break;
+
     default:
         errorBox->setText(tr("Неизвестная ошибка"));
     }
+
     errorBox->exec();
 }
