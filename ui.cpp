@@ -62,7 +62,8 @@ UI::UI(QWidget *parent)
     errorBox = new QMessageBox();
     errorBox->setWindowTitle(tr("Ошибка"));
     errorBox->setStandardButtons(QMessageBox::Ok);
-    errorBox->setText(tr("Вы не должны были увидеть эту ошибку. Мне очень жаль"));
+    errorBox->setText(tr("Вы не должны были увидеть эту ошибку.\n"
+                         "Мне очень жаль."));
 
     //-----------------------Layouts-----------------------
     dLayout = new QHBoxLayout();
@@ -112,6 +113,7 @@ UI::UI(QWidget *parent)
 
 UI::~UI()
 {
+    delete findNButton;
     delete browseButton;
     delete aboutButton;
 
@@ -164,7 +166,7 @@ void UI::browse()
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        error(fileNotFound);
+        error(wrongFile);
         return;
     }
 
@@ -175,22 +177,22 @@ void UI::browse()
         switch(line[0])
         {
         case 'm':
-            fileToTable(line, m);
+            fileToTable(line, TableRow::m);
             break;
 
         case 'f':
             if(line[2] == '0')
-                fileToTable(line, fi0);
+                fileToTable(line, TableRow::fi0);
             if(line[2] == '1')
-                fileToTable(line, fi1);
+                fileToTable(line, TableRow::fi1);
             break;
 
         case 'd':
-            fileToSpinBox(line, d);
+            fileToSpinBox(line, SpinBoxType::d);
             break;
 
         case 'l':
-            fileToSpinBox(line, l);
+            fileToSpinBox(line, SpinBoxType::l);
             break;
 
         case ' ': case '\n': case '\t': case '\0': case '#':
@@ -207,7 +209,7 @@ void UI::browse()
 
 //---------------------------------------------------------
 
-void UI::fileToTable(QByteArray &line, TableRow row)
+void UI::fileToTable(QByteArray &line, TableRow::Row row)
 {
     QString number = "";
     int column = 0;
@@ -234,7 +236,7 @@ void UI::fileToTable(QByteArray &line, TableRow row)
 
 //---------------------------------------------------------
 
-void UI::fileToSpinBox(QByteArray &line, SpinBoxType type)
+void UI::fileToSpinBox(QByteArray &line, SpinBoxType::Type type)
 {
     QString number = "";
     for(int i = 3; i <= line.size(); i++)
@@ -247,9 +249,9 @@ void UI::fileToSpinBox(QByteArray &line, SpinBoxType type)
             number.toDouble(&ok);
             if (ok)
             {
-                if(type == 0)
+                if(type == SpinBoxType::d)
                     dSpinBox->setValue(number.toDouble());
-                if(type == 1)
+                if(type == SpinBoxType::l)
                     lSpinBox->setValue(number.toDouble());
                 number.clear();
             }
@@ -277,15 +279,16 @@ void UI::error(int code)
         break;
 
     case wrongData:
-        errorBox->setText(tr("Ошибочные данные"));
+        errorBox->setText(tr("Ошибочные данные.\n"
+                             "Возможно, файл с данными отформатирован неверно.\n"));
         break;
 
-    case fileNotFound:
-        errorBox->setText((tr("Файл не найден")));
+    case wrongFile:
+        errorBox->setText((tr("Не удалось открыть файл.")));
         break;
 
     default:
-        errorBox->setText(tr("Неизвестная ошибка"));
+        errorBox->setText(tr("Неизвестная ошибка."));
     }
 
     errorBox->exec();

@@ -5,12 +5,19 @@
 #include "errorCodes.h"
 #include "mechanics.h"
 
+namespace TableRow
+{
+    enum Row {m, fi0, fi1};
+}
+
+namespace SpinBoxType
+{
+    enum Type {d, l};
+}
+
 class UI : public QWidget
 {
     Q_OBJECT
-
-enum TableRow {m, fi0, fi1};
-enum SpinBoxType {d, l};
 
 private:
     Mechanics *mechanics;
@@ -22,8 +29,8 @@ private:
     QDoubleSpinBox *dSpinBox, *lSpinBox;
     QLineEdit *nLineEdit;
     QMessageBox *aboutBox, *errorBox;
-    void fileToTable(QByteArray &line, TableRow row);
-    void fileToSpinBox(QByteArray &line, SpinBoxType type);
+    void fileToTable(QByteArray &line, TableRow::Row row);
+    void fileToSpinBox(QByteArray &line, SpinBoxType::Type type);
 
 public:
     UI(QWidget *parent = 0);
